@@ -68,8 +68,8 @@ COPY --from=back-builder /app/api/.venv /app/api/.venv
 RUN python manage.py collectstatic --noinput
 
 # install poppler-utils for pdftohtml command
-RUN apt-get update && apt-get -y install rsync curl poppler-utils && apt-get clean autoclean && apt-get autoremove --yes --purge && rm -rf /var/lib/{apt,dpkg,cache,log}/
-
+# RUN apt-get update && apt-get -y install rsync curl poppler-utils && apt-get clean autoclean && apt-get autoremove --yes --purge && rm -rf /var/lib/{apt,dpkg,cache,log}/
+RUN apt-get update &&  apt-get clean autoclean && apt-get autoremove --yes --purge && rm -rf /var/lib/{apt,dpkg,cache,log}/
 # Make port 8000 available for the app
 EXPOSE 8000
 
