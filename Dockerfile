@@ -1,6 +1,3 @@
-ARG GITLAB_DEPENDENCY_PROXY=""
-# improve build time by pulling images from gitlab and not dockerhub
-
 FROM node:14 AS front-builder
 # reduce image size by not having react dependencies in final image
 
@@ -22,7 +19,7 @@ COPY ./scripts/post_npm_build.sh ../scripts/post_npm_build.sh
 RUN rm -f .env*.local && npm run build
 
 #------------------------------------------------------------------
-FROM ${GITLAB_DEPENDENCY_PROXY}python:3.9-slim as back-builder
+FROM python:3.9-slim as back-builder
 # reduce image size by having only the required python dependencies in final image
 
 ENV PIPENV_VENV_IN_PROJECT=1
@@ -34,7 +31,7 @@ COPY ./api/Pipfile ./api/Pipfile.lock ./
 RUN pipenv install
 
 #------------------------------------------------------------------
-FROM ${GITLAB_DEPENDENCY_PROXY}python:3.9-slim
+FROM python:3.9-slim
 
 ARG HTTPS_PROXY=
 ARG HTTP_PROXY=
